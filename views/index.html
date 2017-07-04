@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width , height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+		<!--[if lt IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link rel="stylesheet" href="/style" />
+		<title> SbJr super chat</title>
+	</head>
+	<body>
+		<header>
+			<h1>Bienvenue sur le chat SbJr</h1>
+		</header>
+		<div class="main">
+			<div class="formChat">
+				<label for="message" id="formChat_pseudo">Votre pseudo</label>
+				<input type="text" id="formChat_message" placeholder="Votre message ..."/>
+				<button id="formChat_button">Envoyer</button>
+			</div>
+			<div class="chat">
+				<ul id="messServer"></ul>
+			</div>
+		</div>
+
+		<footer></footer>
+
+		<!-- ************* DEV ************** <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script> -->
+
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+		<script>
+
+			let socket = io.connect('http://localhost:8080');
+
+			var pseudo = prompt("Veuillez choisir un pseudo :");
+
+			while(pseudo.length < 3 || pseudo.length > 15){
+				pseudo = prompt("Veuillez choisir un pseudo ( entre 3 et 15 lettres ):");
+			}
+			socket.emit("newUser", pseudo);
+			document.getElementById("formChat_pseudo").innerText = pseudo;
+
+			document.getElementById("formChat_button").addEventListener("click", (e) => {
+				let inputMessElt = document.getElementById("formChat_message");
+
+				if(inputMessElt.value != ""){
+
+					let ulMessElt = document.getElementById("messServer");
+
+					socket.emit("message", inputMessElt.value);
+
+					let tempHtml = ulMessElt.innerHTML;
+					ulMessElt.innerHTML = '<li class="you"><strong>Vous</strong> : </li>';
+					ulMessElt.innerText +=  inputMessElt.value;
+					ulMessElt.innerHTML += tempHtml;
+
+					inputMessElt.value = "";
+				}
+				
+			});
+
+			socket.on("newUser",(p_mess) => {
+				let ulMessElt = document.getElementById("messServer");
+				ulMessElt.innerHTML = "<li><em>"+p_mess+"</em></li>"+ulMessElt.innerHTML;
+			});
+
+			socket.on("goodbye",(p_user) => {
+				let ulMessElt = document.getElementById("messServer");
+				ulMessElt.innerHTML = "<li><em><strong>"+p_user+"</strong> s'est deconnecter</em></li>"+ulMessElt.innerHTML;
+			});
+
+			socket.on("message",(p_data) => {
+				let ulMessElt = document.getElementById("messServer");
+				ulMessElt.innerHTML = "<li><strong>"+p_data.pseudo+"</strong> : "+p_data.message+"</li>"+ulMessElt.innerHTML;
+			});
+		</script>
+	</body>
+</html>

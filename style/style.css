@@ -1,0 +1,47 @@
+html, body{
+
+}
+
+body{
+	background-color: black;
+	color: white;
+}
+
+*{
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+ul{
+	list-style-type: none;
+}
+
+.main{
+	max-width: 100%;
+}
+
+.formChat{
+	margin:20px;
+	width: 100%;
+	text-align: center;
+}
+
+.chat{
+	margin:auto;
+	text-align: left;
+	border:1px white solid;
+	max-width:90%;
+}
+
+.chat strong{
+	text-decoration: underline;
+}
+
+.chat em{
+	color: red;
+}
+
+.chat .you{
+	color:yellow;
+}
