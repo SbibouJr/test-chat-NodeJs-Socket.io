@@ -1,7 +1,7 @@
 {
-  "name": "test-app-chat",
-  "version": "0.0.2",
-  "description": "Une app de tchat minimaliste",
+  "name": "test-app-chat-nodeJs-Socket.io",
+  "version": "0.0.3",
+  "description": "Une app de tchat minimaliste pour tester Socket.io",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

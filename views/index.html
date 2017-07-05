@@ -15,9 +15,11 @@
 		</header>
 		<div class="main">
 			<div class="formChat">
-				<label for="message" id="formChat_pseudo">Votre pseudo</label>
-				<input type="text" id="formChat_message" placeholder="Votre message ..."/>
-				<button id="formChat_button">Envoyer</button>
+				<form>
+					<label for="message" id="formChat_pseudo">Votre pseudo</label>
+					<input type="text" id="formChat_message" placeholder="Votre message ..."/>
+					<input type="submit" id="formChat_button" value="Envoyer"/>
+				</form>
 			</div>
 			<div class="chat">
 				<ul id="messServer"></ul>
@@ -43,6 +45,7 @@
 			document.getElementById("formChat_pseudo").innerText = pseudo;
 
 			document.getElementById("formChat_button").addEventListener("click", (e) => {
+				e.preventDefault();
 				let inputMessElt = document.getElementById("formChat_message");
 
 				if(inputMessElt.value != ""){
@@ -52,10 +55,9 @@
 					socket.emit("message", inputMessElt.value);
 
 					let tempHtml = ulMessElt.innerHTML;
-					ulMessElt.innerHTML = '<li class="you"><strong>Vous</strong> : </li>';
-					ulMessElt.innerText +=  inputMessElt.value;
+					ulMessElt.innerHTML = '<li class="you"><strong>Vous</strong> : <span></span></li>';
+					ulMessElt.getElementsByTagName('span')[0].innerText = inputMessElt.value;
 					ulMessElt.innerHTML += tempHtml;
-
 					inputMessElt.value = "";
 				}
 				
